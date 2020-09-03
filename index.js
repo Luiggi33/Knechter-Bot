@@ -53,31 +53,31 @@ client.on('message', async message => {
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         const command = args.shift().toLowerCase();
 
-        if (command === 'creeper') {
+        if (message === 'creeper') {
             message.channel.send("Aw Man" + emojiCharacters['!']);
         }
 
-        if (command.includes('hello there')) {
+        if (message.includes('hello there')) {
             message.channel.send("General Kenobi!");
         }
 
-        if (command.includes('orangensaft')) {
+        if (message.includes('orangensaft')) {
             message.channel.send("Einfach Orangensaft!");
         }
 
-        if (command.includes('racist')) {
+        if (message.includes('racist')) {
             message.channel.send("Don't be racist, I am a Building :homes: !");
         }
 
-        if (command.includes('raid shadow legends')) {
+        if (message.includes('raid shadow legends')) {
             message.channel.send("This Bot was sponsored by Raid Shadow Legends!");
         }
 
-        if (command.includes('knecht')) {
+        if (message.includes('knecht')) {
             message.channel.send("Hab ich gehört jemand soll geknechtet werden :thinking: ");
         }
 
-        if (command.includes('prefix')) {
+        if (message.includes('prefix')) {
             message.channel.send("Mein Prefix ist " + prefix);
         }
 
@@ -214,7 +214,7 @@ client.on('message', async message => {
 
         if (command === 'steamlvl') {
             if (!args.length) {
-                return message.channel.send(`DU HURENKIND ${message.author} DU MUSST SCHON NE STEAMID ANGEBEN!`)
+                return message.channel.send(`Du Knecht ${message.author}... du müsstest mir schon eine Steam ID geben!`)
             }
             steamid = args[0];
             fetch('https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=' + steamapikey + '&steamid=' + steamid)
@@ -225,6 +225,23 @@ client.on('message', async message => {
                     console.log("Das gesuchte Steam Level ist " + playerLevel + "!");
                 })
                 .then(json => console.log(json));
+        }
+
+        if(command === 'corona') {
+            //https://api.thevirustracker.com/free-api?countryTotal=DE
+            fetch('https://api.thevirustracker.com/free-api?countryTotal=DE')
+                .then(response => response.json())
+                .then(function (response) {
+                    const corona = new MessageEmbed()
+                    .setColor('#EFFF00')
+                    .setTitle("Corona Stats von Deutschland :joy:")
+                    .url(response.countrydata.source)
+                    .addFields(
+                        { name: 'Alle Fälle', value: ("Im Moment: " + response.countrydata.total_cases) },
+                        { name: 'Erholte Fälle', value: ("Es haben sich " + response.countrydata.total_recovered + " Menschen erholt") },
+                        { name: 'Tote: ', value: ("Es starben durch Corona " + response.countrydata.total_deaths) },
+                        { name: 'Heutige Fälle: ', value: (response.countrydata.total_new_cases_today + " neue Fälle") });
+                })
         }
     }
 })
